@@ -13,6 +13,7 @@
   "author": "palaniraja",
   "license": "ISC",
   "dependencies": {
+    "hugo": "^0.0.3",
     "moment": "^2.22.2",
     "sanitize-filename": "^1.6.3",
     "turndown": "^5.0.1",
