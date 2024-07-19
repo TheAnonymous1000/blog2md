@@ -1,7 +1,6 @@
 <script>
 const h = "nightowl-color-scheme", l = "light", o = "dark";
 let n = null, t = l, g = !0, i = "currentState";
-
 try {
   n = localStorage;
 } catch {}
@@ -9,27 +8,39 @@ try {
 function a() {
   const e = document.createElement("style");
   e.innerHTML = `
-    body.nightowl-dark {
-        background-color: #121212;
-        color: #ffffff;
+    /* Dark mode styles */
+    .nightowl-light body {
+        filter: invert(0%);
     }
-
-    body.nightowl-dark a {
-        color: #1e90ff;
-    }
-
-    body.nightowl-dark img, body.nightowl-dark video, body.nightowl-dark iframe, body.nightowl-dark .exclude-from-dark-mode {
-        filter: none;
-    }
-
-    /* Additional dark mode styles */
-    body.nightowl-dark .navbar {
-        background-color: #333;
-    }
-
-    body.nightowl-dark .footer {
+    
+    .nightowl-dark {
         background-color: #111;
-        color: #ccc;
+    }
+
+    .nightowl-dark body {
+        filter: invert(100%) hue-rotate(180deg);
+    }
+
+    /* Do not invert media (revert the invert). */
+    .nightowl-dark img, 
+    .nightowl-dark video, 
+    .nightowl-dark iframe {
+        filter: invert(100%) hue-rotate(180deg) !important;
+    }
+
+    /* Improve contrast on icons. */
+    .nightowl-dark .icon {
+        filter: invert(15%) hue-rotate(180deg);
+    }
+
+    /* Re-enable code block backgrounds. */
+    .nightowl-dark pre {
+        filter: invert(6%);
+    }
+
+    /* Improve contrast on list item markers. */
+    .nightowl-dark li::marker {
+        color: #666;
     }
   `, document.head.appendChild(e);
 }
@@ -78,16 +89,13 @@ function u() {
 
 function c() {
   const e = document.createElement("div");
-  const size = localStorage.getItem('toggle-size') || '50px';
-  const position = localStorage.getItem('toggle-position') || 'calc(100vw - 100px)';
-
   e.id = "nightowl-switcher-default";
   e.style.position = "fixed";
-  e.style.left = position;
+  e.style.left = "calc(100vw - 100px)";
   e.style.top = "10px";
-  e.style.width = size;
-  e.style.height = size;
-  e.style.borderRadius = "50%"; 
+  e.style.width = "50px";
+  e.style.height = "50px";
+  e.style.borderRadius = "50%";
   e.style.backgroundColor = i === "newState" ? "black" : "white";
   e.style.display = "flex";
   e.style.justifyContent = "center";
@@ -104,49 +112,6 @@ function c() {
   });
   document.body.appendChild(e);
   u();
-
-  // Create controls for size and position
-  const controlPanel = document.createElement('div');
-  controlPanel.style.position = 'fixed';
-  controlPanel.style.left = '10px';
-  controlPanel.style.bottom = '10px';
-  controlPanel.style.zIndex = '9999';
-  controlPanel.style.padding = '10px';
-  controlPanel.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-  controlPanel.style.color = 'white';
-  controlPanel.style.borderRadius = '5px';
-
-  const sizeLabel = document.createElement('label');
-  sizeLabel.textContent = 'Size:';
-  controlPanel.appendChild(sizeLabel);
-
-  const sizeInput = document.createElement('input');
-  sizeInput.type = 'number';
-  sizeInput.value = parseInt(size);
-  sizeInput.style.marginLeft = '5px';
-  sizeInput.style.marginRight = '10px';
-  sizeInput.addEventListener('input', () => {
-    localStorage.setItem('toggle-size', `${sizeInput.value}px`);
-    document.getElementById('nightowl-switcher-default').style.width = `${sizeInput.value}px`;
-    document.getElementById('nightowl-switcher-default').style.height = `${sizeInput.value}px`;
-  });
-  controlPanel.appendChild(sizeInput);
-
-  const positionLabel = document.createElement('label');
-  positionLabel.textContent = 'Position:';
-  controlPanel.appendChild(positionLabel);
-
-  const positionInput = document.createElement('input');
-  positionInput.type = 'text';
-  positionInput.value = position;
-  positionInput.style.marginLeft = '5px';
-  positionInput.addEventListener('input', () => {
-    localStorage.setItem('toggle-position', positionInput.value);
-    document.getElementById('nightowl-switcher-default').style.left = positionInput.value;
-  });
-  controlPanel.appendChild(positionInput);
-
-  document.body.appendChild(controlPanel);
 }
 
 function y() {
@@ -177,3 +142,5 @@ export {
   M as createNightowl
 };
 </script>
+
+
